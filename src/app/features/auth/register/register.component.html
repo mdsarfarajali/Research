@@ -1,0 +1,51 @@
+<div class="auth-container">
+  <div class="auth-bg"><div class="bg-orb bg-orb--1"></div><div class="bg-orb bg-orb--2"></div><div class="bg-orb bg-orb--3"></div></div>
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">
+        <svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="url(#rg)"/><path d="M12 28V12h6c3.3 0 6 2.7 6 6s-2.7 6-6 6h-3v4h-3zm3-7h3c1.7 0 3-1.3 3-3s-1.3-3-3-3h-3v6z" fill="white"/><defs><linearGradient id="rg" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+      </div>
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Join the Research Portal</p>
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form" id="register-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName" class="form-input" placeholder="Sarah" />
+          <div class="form-error" *ngIf="f['firstName'].touched && f['firstName'].errors"><span *ngIf="f['firstName'].errors['required']">Required</span></div>
+        </div>
+        <div class="form-group">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-input" placeholder="Mitchell" />
+          <div class="form-error" *ngIf="f['lastName'].touched && f['lastName'].errors"><span *ngIf="f['lastName'].errors['required']">Required</span></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="reg-email" class="form-label">Email Address</label>
+        <input type="email" id="reg-email" formControlName="email" class="form-input" placeholder="you@research.edu" />
+        <div class="form-error" *ngIf="f['email'].touched && f['email'].errors"><span *ngIf="f['email'].errors['required']">Required</span><span *ngIf="f['email'].errors['email']">Invalid email</span></div>
+      </div>
+      <div class="form-group">
+        <label for="reg-password" class="form-label">Password</label>
+        <input [type]="showPassword ? 'text' : 'password'" id="reg-password" formControlName="password" class="form-input" placeholder="••••••••" />
+        <div class="form-error" *ngIf="f['password'].touched && f['password'].errors"><span *ngIf="f['password'].errors['required']">Required</span><span *ngIf="f['password'].errors['minlength']">Min 6 characters</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="role" class="form-label">Role</label>
+          <select id="role" formControlName="role" class="form-input form-select">
+            <option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="department" class="form-label">Department</label>
+          <input type="text" id="department" formControlName="department" class="form-input" placeholder="Computer Science" />
+        </div>
+      </div>
+      <div class="form-error server-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <button type="submit" class="btn-primary" [disabled]="isLoading" id="register-submit">{{ isLoading ? 'Creating...' : 'Create Account' }}</button>
+    </form>
+    <p class="auth-footer">Already have an account? <a routerLink="/auth/login" class="auth-link">Sign in</a></p>
+  </div>
+</div>

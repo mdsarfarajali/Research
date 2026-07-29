@@ -1,0 +1,63 @@
+<div class="faculty-form-page">
+  <header class="page-header"><h1 class="page-title">{{ isEditing ? 'Edit' : 'Add' }} Faculty Profile</h1></header>
+
+  <app-loading-spinner *ngIf="isLoading" [inline]="true" message="Loading profile..."></app-loading-spinner>
+
+  <form *ngIf="!isLoading" [formGroup]="form" (ngSubmit)="onSubmit()" class="profile-form" id="faculty-form">
+    <div class="form-card">
+      <h2 class="card-heading">Personal Information</h2>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name *</label><input type="text" formControlName="firstName" class="form-input" placeholder="Dr. Sarah" id="fac-firstName" /></div>
+        <div class="form-group"><label class="form-label">Last Name *</label><input type="text" formControlName="lastName" class="form-input" placeholder="Mitchell" id="fac-lastName" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Department *</label><input type="text" formControlName="department" class="form-input" placeholder="Computer Science" id="fac-department" /></div>
+        <div class="form-group"><label class="form-label">Designation *</label><input type="text" formControlName="designation" class="form-input" placeholder="Associate Professor" id="fac-designation" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">Biography *</label><textarea formControlName="bio" class="form-input form-textarea" rows="4" placeholder="Brief biography..." id="fac-bio"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Phone</label><input type="text" formControlName="phone" class="form-input" placeholder="+1-555-0101" id="fac-phone" /></div>
+        <div class="form-group"><label class="form-label">Office Location</label><input type="text" formControlName="officeLocation" class="form-input" placeholder="CS Building, Room 305" id="fac-office" /></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2 class="card-heading">Specializations</h2>
+      <div formArrayName="specialization">
+        <div class="array-item" *ngFor="let ctrl of specialization.controls; let i = index">
+          <input type="text" [formControlName]="i" class="form-input" [placeholder]="'Specialization ' + (i+1)" />
+          <button type="button" class="btn-icon btn-icon--remove" (click)="removeSpec(i)" *ngIf="specialization.length > 1">✕</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-add" (click)="addSpec()" *ngIf="specialization.length < 10">+ Add Specialization</button>
+    </div>
+
+    <div class="form-card">
+      <h2 class="card-heading">Research Interests</h2>
+      <div formArrayName="researchInterests">
+        <div class="array-item" *ngFor="let ctrl of researchInterests.controls; let i = index">
+          <input type="text" [formControlName]="i" class="form-input" [placeholder]="'Interest ' + (i+1)" />
+          <button type="button" class="btn-icon btn-icon--remove" (click)="removeInterest(i)" *ngIf="researchInterests.length > 1">✕</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-add" (click)="addInterest()" *ngIf="researchInterests.length < 10">+ Add Interest</button>
+    </div>
+
+    <div class="form-card">
+      <h2 class="card-heading">External Links</h2>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Google Scholar</label><input type="url" formControlName="googleScholarUrl" class="form-input" placeholder="https://scholar.google.com/..." id="fac-scholar" /></div>
+        <div class="form-group"><label class="form-label">ORCID</label><input type="text" formControlName="orcidId" class="form-input" placeholder="0000-0001-2345-6789" id="fac-orcid" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">LinkedIn</label><input type="url" formControlName="linkedinUrl" class="form-input" placeholder="https://linkedin.com/in/..." id="fac-linkedin" /></div>
+        <div class="form-group"><label class="form-label">Website</label><input type="url" formControlName="websiteUrl" class="form-input" placeholder="https://..." id="fac-website" /></div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline" routerLink="/faculty">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="isSaving" id="save-faculty">{{ isSaving ? 'Saving...' : (isEditing ? 'Update Profile' : 'Create Profile') }}</button>
+    </div>
+  </form>
+</div>

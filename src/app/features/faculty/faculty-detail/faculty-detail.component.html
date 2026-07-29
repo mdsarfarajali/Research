@@ -1,0 +1,77 @@
+<div class="faculty-detail-page">
+  <app-loading-spinner *ngIf="isLoading" [inline]="true" message="Loading profile..."></app-loading-spinner>
+
+  <div *ngIf="!isLoading && !profile" class="not-found"><h2>Profile Not Found</h2><button class="btn btn-primary" (click)="goBack()">Back</button></div>
+
+  <div *ngIf="!isLoading && profile" class="detail-content" id="faculty-detail">
+    <button class="back-btn" (click)="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m15 18-6-6 6-6"/></svg>
+      Back to Faculty
+    </button>
+
+    <div class="profile-header">
+      <div class="profile-avatar">{{ profile.firstName.charAt(0) }}{{ profile.lastName.charAt(0) }}</div>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ profile.firstName }} {{ profile.lastName }}</h1>
+        <p class="profile-designation">{{ profile.designation }}</p>
+        <p class="profile-department">{{ profile.department }}</p>
+      </div>
+      <button class="btn btn-outline" [routerLink]="['/faculty', profile.id, 'edit']" id="edit-profile-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit Profile
+      </button>
+    </div>
+
+    <div class="profile-grid">
+      <div class="profile-main">
+        <div class="detail-card">
+          <h3 class="card-title">Biography</h3>
+          <p class="bio-text">{{ profile.bio }}</p>
+        </div>
+        <div class="detail-card">
+          <h3 class="card-title">Research Interests</h3>
+          <div class="tags-list"><span class="tag" *ngFor="let ri of profile.researchInterests">{{ ri }}</span></div>
+        </div>
+        <div class="detail-card">
+          <h3 class="card-title">Specializations</h3>
+          <div class="tags-list"><span class="tag tag--alt" *ngFor="let s of profile.specialization">{{ s }}</span></div>
+        </div>
+      </div>
+      <div class="profile-sidebar">
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Statistics</h3>
+          <div class="stat-list">
+            <div class="stat-row"><span class="stat-label">Publications</span><span class="stat-val">{{ profile.publications.length }}</span></div>
+            <div class="stat-row"><span class="stat-label">Citations</span><span class="stat-val">{{ profile.totalCitations }}</span></div>
+            <div class="stat-row"><span class="stat-label">h-index</span><span class="stat-val">{{ profile.hIndex }}</span></div>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Contact</h3>
+          <div class="contact-list">
+            <div *ngIf="profile.email" class="contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              {{ profile.email }}
+            </div>
+            <div *ngIf="profile.phone" class="contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              {{ profile.phone }}
+            </div>
+            <div *ngIf="profile.officeLocation" class="contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {{ profile.officeLocation }}
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-card" *ngIf="profile.googleScholarUrl || profile.orcidId || profile.linkedinUrl">
+          <h3 class="sidebar-title">Links</h3>
+          <div class="links-list">
+            <a *ngIf="profile.googleScholarUrl" [href]="profile.googleScholarUrl" target="_blank" class="ext-link">Google Scholar</a>
+            <a *ngIf="profile.orcidId" [href]="'https://orcid.org/' + profile.orcidId" target="_blank" class="ext-link">ORCID</a>
+            <a *ngIf="profile.linkedinUrl" [href]="profile.linkedinUrl" target="_blank" class="ext-link">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

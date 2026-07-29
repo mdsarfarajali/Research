@@ -1,0 +1,77 @@
+<div class="submit-page">
+  <header class="page-header"><h1 class="page-title">Submit Research Paper</h1><p class="page-subtitle">Complete the form below to submit your paper for review</p></header>
+
+  <div *ngIf="isSuccess" class="success-banner" id="submit-success">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <div><h3>Paper Submitted Successfully!</h3><p>Redirecting to papers list...</p></div>
+  </div>
+
+  <form *ngIf="!isSuccess" [formGroup]="submitForm" (ngSubmit)="onSubmit()" class="submit-form" id="paper-submit-form">
+    <div class="form-card">
+      <h2 class="card-heading">Paper Details</h2>
+      <div class="form-group">
+        <label for="title" class="form-label">Title *</label>
+        <input type="text" id="title" formControlName="title" class="form-input" placeholder="Enter your paper title" />
+        <div class="form-error" *ngIf="f['title'].touched && f['title'].errors">
+          <span *ngIf="f['title'].errors['required']">Title is required</span>
+          <span *ngIf="f['title'].errors['minlength']">Minimum 10 characters</span>
+          <span *ngIf="f['title'].errors['maxlength']">Maximum 200 characters</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="abstract" class="form-label">Abstract *</label>
+        <textarea id="abstract" formControlName="abstract" class="form-input form-textarea" rows="6" placeholder="Provide a comprehensive abstract of your research..."></textarea>
+        <div class="form-meta"><span class="char-count" [class.over]="abstractLength > 2000">{{ abstractLength }} / 2000</span></div>
+        <div class="form-error" *ngIf="f['abstract'].touched && f['abstract'].errors">
+          <span *ngIf="f['abstract'].errors['required']">Abstract is required</span>
+          <span *ngIf="f['abstract'].errors['minlength']">Minimum 50 characters</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="category" class="form-label">Category *</label>
+        <select id="category" formControlName="category" class="form-input form-select">
+          <option value="">Select a category</option>
+          <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
+        </select>
+        <div class="form-error" *ngIf="f['category'].touched && f['category'].errors"><span>Category is required</span></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2 class="card-heading">Authors</h2>
+      <div formArrayName="authors">
+        <div class="array-item" *ngFor="let author of authors.controls; let i = index">
+          <input type="text" [formControlName]="i" class="form-input" [placeholder]="'Author ' + (i + 1) + ' name'" [id]="'author-' + i" />
+          <button type="button" class="btn-icon btn-icon--remove" (click)="removeAuthor(i)" *ngIf="authors.length > 1" [attr.aria-label]="'Remove author ' + (i + 1)">✕</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-add" (click)="addAuthor()" *ngIf="authors.length < 10" id="add-author">+ Add Author</button>
+    </div>
+
+    <div class="form-card">
+      <h2 class="card-heading">Keywords</h2>
+      <div formArrayName="keywords">
+        <div class="array-item" *ngFor="let kw of keywords.controls; let i = index">
+          <input type="text" [formControlName]="i" class="form-input" [placeholder]="'Keyword ' + (i + 1)" [id]="'keyword-' + i" />
+          <button type="button" class="btn-icon btn-icon--remove" (click)="removeKeyword(i)" *ngIf="keywords.length > 1" [attr.aria-label]="'Remove keyword ' + (i + 1)">✕</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-add" (click)="addKeyword()" *ngIf="keywords.length < 10" id="add-keyword">+ Add Keyword</button>
+    </div>
+
+    <div class="form-card">
+      <h2 class="card-heading">Publication Info (Optional)</h2>
+      <div class="form-row">
+        <div class="form-group"><label for="doi" class="form-label">DOI</label><input type="text" id="doi" formControlName="doi" class="form-input" placeholder="10.xxxx/xxxxx" /></div>
+        <div class="form-group"><label for="journal" class="form-label">Journal</label><input type="text" id="journal" formControlName="journal" class="form-input" placeholder="Journal name" /></div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline" routerLink="/papers" id="cancel-submit">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading" id="submit-btn">
+        {{ isLoading ? 'Submitting...' : 'Submit Paper' }}
+      </button>
+    </div>
+  </form>
+</div>

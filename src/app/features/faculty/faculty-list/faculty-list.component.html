@@ -1,0 +1,48 @@
+<div class="faculty-list-page">
+  <header class="page-header">
+    <div><h1 class="page-title">Faculty Profiles</h1><p class="page-subtitle">{{ faculty.length }} faculty members</p></div>
+    <button class="btn btn-primary" routerLink="/faculty/new" id="add-faculty-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 5v14M5 12h14"/></svg>
+      Add Faculty
+    </button>
+  </header>
+
+  <app-search-bar placeholder="Search faculty by name, department, specialization..." (searchChange)="onSearch($event)" [debounce]="300"></app-search-bar>
+
+  <app-loading-spinner *ngIf="isLoading" [inline]="true" message="Loading faculty..."></app-loading-spinner>
+
+  <div class="faculty-grid" *ngIf="!isLoading" id="faculty-grid">
+    <div class="faculty-card" *ngFor="let f of faculty">
+      <div class="card-top">
+        <div class="avatar">{{ f.firstName.charAt(0) }}{{ f.lastName.charAt(0) }}</div>
+        <div class="card-actions">
+          <button class="btn-icon" [routerLink]="['/faculty', f.id, 'edit']" title="Edit" [id]="'edit-' + f.id">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="btn-icon btn-icon--danger" (click)="confirmDelete(f)" title="Delete" [id]="'delete-' + f.id">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="card-body" [routerLink]="['/faculty', f.id]" style="cursor:pointer;">
+        <h3 class="faculty-name">{{ f.firstName }} {{ f.lastName }}</h3>
+        <p class="faculty-designation">{{ f.designation }}</p>
+        <p class="faculty-department">{{ f.department }}</p>
+        <div class="specializations">
+          <span class="spec-tag" *ngFor="let s of f.specialization.slice(0, 3)">{{ s }}</span>
+        </div>
+        <div class="faculty-stats">
+          <div class="fstat"><span class="fstat-val">{{ f.publications.length }}</span><span class="fstat-label">Papers</span></div>
+          <div class="fstat"><span class="fstat-val">{{ f.totalCitations }}</span><span class="fstat-label">Citations</span></div>
+          <div class="fstat"><span class="fstat-val">{{ f.hIndex }}</span><span class="fstat-label">h-index</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && faculty.length === 0" class="empty-state">
+    <h3>No faculty found</h3><p>Try adjusting your search or add a new faculty member.</p>
+  </div>
+
+  <app-confirm-dialog [isOpen]="showDeleteDialog" title="Delete Faculty Profile" [message]="'Are you sure you want to delete ' + (deleteTarget?.firstName || '') + ' ' + (deleteTarget?.lastName || '') + '?'" confirmText="Delete" (confirmed)="deleteFaculty()" (cancelled)="cancelDelete()"></app-confirm-dialog>
+</div>

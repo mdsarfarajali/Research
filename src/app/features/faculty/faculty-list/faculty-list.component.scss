@@ -1,0 +1,43 @@
+.faculty-list-page { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+.page-title { color: #f1f5f9; font-size: 1.75rem; font-weight: 700; }
+.page-subtitle { color: #94a3b8; font-size: 0.9375rem; margin-top: 0.25rem; }
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
+.btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+
+.faculty-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.faculty-card {
+  background: rgba(20, 20, 50, 0.6); border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 1rem; overflow: hidden; transition: all 0.3s ease;
+}
+.faculty-card:hover { transform: translateY(-3px); border-color: rgba(99, 102, 241, 0.3); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; padding: 1.25rem 1.25rem 0; }
+.avatar {
+  width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.125rem;
+}
+.card-actions { display: flex; gap: 0.375rem; }
+.btn-icon {
+  width: 32px; height: 32px; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;
+  border: none; cursor: pointer; transition: all 0.2s; background: rgba(99, 102, 241, 0.1); color: #a5b4fc;
+}
+.btn-icon:hover { background: rgba(99, 102, 241, 0.25); }
+.btn-icon--danger { background: rgba(239, 68, 68, 0.1); color: #f87171; }
+.btn-icon--danger:hover { background: rgba(239, 68, 68, 0.25); }
+.card-body { padding: 1rem 1.25rem 1.25rem; }
+.faculty-name { color: #e2e8f0; font-size: 1.0625rem; font-weight: 600; }
+.faculty-designation { color: #a5b4fc; font-size: 0.8125rem; margin-top: 0.125rem; }
+.faculty-department { color: #64748b; font-size: 0.8125rem; margin-top: 0.125rem; margin-bottom: 0.75rem; }
+.specializations { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 1rem; }
+.spec-tag { padding: 0.25rem 0.625rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 9999px; color: #a5b4fc; font-size: 0.6875rem; }
+.faculty-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; padding-top: 0.75rem; border-top: 1px solid rgba(99, 102, 241, 0.08); text-align: center; }
+.fstat-val { display: block; color: #f1f5f9; font-size: 1.125rem; font-weight: 700; }
+.fstat-label { color: #64748b; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.empty-state { text-align: center; padding: 4rem; color: #64748b; }
+.empty-state h3 { color: #94a3b8; margin-bottom: 0.5rem; }
+
+@media (max-width: 640px) { .faculty-grid { grid-template-columns: 1fr; } }
